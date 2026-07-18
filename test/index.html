@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>우리 아이 놀이환경 유형 테스트 | 디니테라스</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --cream:#FBF6EE;
+    --card:#FFFFFF;
+    --terracotta:#C97B5E;
+    --terracotta-dark:#B4664B;
+    --sage:#8A9A7E;
+    --sage-light:#E4E9DE;
+    --brown:#4A3B32;
+    --brown-soft:#7A6A5D;
+    --line:#EAE0D2;
+    --shadow: 0 8px 24px rgba(74,59,50,0.08);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+    background: linear-gradient(180deg, #FBF6EE 0%, #F6EFE2 100%);
+    color:var(--brown);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .app{
+    width:100%;
+    max-width:560px;
+  }
+  .card{
+    background:var(--card);
+    border-radius:28px;
+    box-shadow:var(--shadow);
+    padding:40px 32px;
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-60px; right:-60px;
+    width:160px; height:160px;
+    background:var(--sage-light);
+    border-radius:50%;
+    opacity:0.6;
+  }
+  .card::after{
+    content:"";
+    position:absolute;
+    bottom:-70px; left:-50px;
+    width:180px; height:180px;
+    background:#F3E4D7;
+    border-radius:50%;
+    opacity:0.6;
+  }
+  .card > *{ position:relative; z-index:1; }
+
+  .brand{
+    font-size:13px;
+    letter-spacing:0.14em;
+    color:var(--terracotta-dark);
+    font-weight:600;
+    margin-bottom:10px;
+    text-transform:uppercase;
+  }
+  h1{
+    font-size:24px;
+    line-height:1.4;
+    margin:0 0 14px;
+    font-weight:700;
+    color:var(--brown);
+  }
+  .lead{
+    font-size:15px;
+    line-height:1.7;
+    color:var(--brown-soft);
+    margin-bottom:28px;
+  }
+  .intro-list{
+    background:var(--cream);
+    border-radius:16px;
+    padding:18px 20px;
+    margin-bottom:28px;
+    font-size:14px;
+    line-height:1.9;
+    color:var(--brown-soft);
+  }
+  .intro-list b{ color:var(--brown); }
+
+  button.primary{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:var(--terracotta);
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background .2s ease, transform .1s ease;
+    font-family:inherit;
+  }
+  button.primary:hover{ background:var(--terracotta-dark); }
+  button.primary:active{ transform:scale(0.98); }
+
+  button.ghost{
+    width:100%;
+    padding:14px;
+    border:1.5px solid var(--line);
+    border-radius:14px;
+    background:transparent;
+    color:var(--brown-soft);
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    margin-top:10px;
+    font-family:inherit;
+  }
+  button.ghost:hover{ border-color:var(--terracotta); color:var(--terracotta-dark); }
+
+  /* progress */
+  .progress-wrap{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:26px;
+  }
+  .progress-bar{
+    flex:1;
+    height:6px;
+    background:var(--sage-light);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--sage);
+    border-radius:6px;
+    transition:width .35s ease;
+  }
+  .progress-text{
+    font-size:12px;
+    color:var(--brown-soft);
+    white-space:nowrap;
+    font-weight:600;
+  }
+
+  .q-title{
+    font-size:19px;
+    font-weight:700;
+    line-height:1.55;
+    margin:0 0 24px;
+    color:var(--brown);
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .option{
+    text-align:left;
+    padding:16px 18px;
+    border-radius:14px;
+    border:1.5px solid var(--line);
+    background:#FFFDF9;
+    font-size:14.5px;
+    line-height:1.6;
+    color:var(--brown);
+    cursor:pointer;
+    transition:all .15s ease;
+    font-family:inherit;
+  }
+  .option:hover{
+    border-color:var(--terracotta);
+    background:#FFF6EF;
+    transform:translateY(-1px);
+  }
+
+  /* result */
+  .result-emoji{
+    font-size:46px;
+    margin-bottom:6px;
+  }
+  .result-tag{
+    display:inline-block;
+    background:var(--sage-light);
+    color:#5C6B52;
+    font-size:12.5px;
+    font-weight:700;
+    padding:5px 12px;
+    border-radius:100px;
+    margin-bottom:14px;
+  }
+  .result-title{
+    font-size:25px;
+    font-weight:800;
+    margin:0 0 6px;
+    color:var(--brown);
+  }
+  .result-sub{
+    font-size:14.5px;
+    color:var(--terracotta-dark);
+    font-weight:600;
+    margin-bottom:22px;
+  }
+  .section-label{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--sage);
+    letter-spacing:0.04em;
+    margin-bottom:8px;
+    margin-top:22px;
+  }
+  .why-box{
+    background:var(--cream);
+    border-radius:14px;
+    padding:16px 18px;
+    font-size:14px;
+    line-height:1.8;
+    color:var(--brown-soft);
+  }
+  .desc{
+    font-size:14.5px;
+    line-height:1.85;
+    color:var(--brown-soft);
+    margin-top:6px;
+  }
+  .checklist{
+    list-style:none;
+    padding:0;
+    margin:8px 0 0;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .checklist li{
+    display:flex;
+    gap:10px;
+    font-size:14px;
+    line-height:1.6;
+    color:var(--brown);
+    background:#FFFDF9;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 14px;
+  }
+  .checklist li .num{
+    flex:none;
+    width:22px; height:22px;
+    border-radius:50%;
+    background:var(--terracotta);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .cta-box{
+    margin-top:26px;
+    background:linear-gradient(135deg, #F3E4D7 0%, var(--sage-light) 100%);
+    border-radius:16px;
+    padding:18px 20px;
+    font-size:13.5px;
+    line-height:1.75;
+    color:var(--brown);
+  }
+  .cta-box b{ color:var(--terracotta-dark); }
+
+  .footer-note{
+    text-align:center;
+    font-size:11.5px;
+    color:#B3A79A;
+    margin-top:18px;
+    letter-spacing:0.02em;
+  }
+
+  /* share row */
+  .share-row{
+    display:flex;
+    gap:10px;
+    margin-top:18px;
+  }
+  .share-btn{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    padding:14px 10px;
+    border-radius:14px;
+    font-size:13.5px;
+    font-weight:700;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    font-family:inherit;
+    transition:transform .1s ease, filter .15s ease;
+  }
+  .share-btn:hover{ filter:brightness(0.97); }
+  .share-btn:active{ transform:scale(0.98); }
+  .kakao-btn{
+    background:#FEE500;
+    color:#3C1E1E;
+  }
+  .insta-btn{
+    background:#fff;
+    color:var(--brown);
+    border:1.5px solid var(--line);
+  }
+  .insta-btn:hover{ border-color:var(--terracotta); }
+  .share-hint{
+    text-align:center;
+    font-size:11px;
+    color:#B3A79A;
+    margin-top:8px;
+    line-height:1.6;
+  }
+
+  /* toast */
+  .toast{
+    position:fixed;
+    left:50%;
+    bottom:32px;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--brown);
+    color:#fff;
+    font-size:13.5px;
+    font-weight:600;
+    padding:12px 20px;
+    border-radius:100px;
+    box-shadow:0 10px 24px rgba(0,0,0,0.18);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+    z-index:50;
+    white-space:nowrap;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  @media (max-width:420px){
+    .card{ padding:30px 22px; border-radius:22px; }
+    h1{ font-size:21px; }
+    .share-row{ flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="card" id="card"></div>
+  <div class="footer-note">✧ 디니테라스 ⋅ 환경이 아이를 바꾼다는 믿음으로 ✧</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   설정: 인스타그램 계정 / 공유 텍스트
+   ========================================================= */
+const INSTAGRAM_URL = "https://www.instagram.com/dini_terrace";
+
+/* =========================================================
+   데이터: 질문 & 결과
+   ========================================================= */
+const QUESTIONS = [
+  {
+    q: "우리 아이가 노는 모습, 가장 많이 떠오르는 장면은?",
+    options: [
+      { t:"레고나 퍼즐 하나에 꽂히면 밥 먹으라고 불러도 잘 못 듣는다", type:"A" },
+      { t:"인형이나 피규어로 이야기를 만들며 혼잣말하듯 논다", type:"B" },
+      { t:"뛰고 구르고 몸을 써야 신나 보인다", type:"C" },
+      { t:"형제자매나 친구랑 같이 놀 때 눈이 제일 반짝인다", type:"D" },
+    ]
+  },
+  {
+    q: "아이방(놀이방)에서 가장 자주 벌어지는 상황은?",
+    options: [
+      { t:"장난감을 다 꺼내놓고 그 자리에서 한참 안 움직인다", type:"A" },
+      { t:"그림 그리거나 만들기 재료가 여기저기 널브러져 있다", type:"B" },
+      { t:"뛰어다니다 물건이 넘어지거나 부딪히는 소리가 잦다", type:"C" },
+      { t:"사람이 많거나 시끄러우면 갑자기 예민해지고 혼자 있고 싶어한다", type:"E" },
+    ]
+  },
+  {
+    q: "아이 물건을 정리할 때 나를 가장 힘들게 하는 건?",
+    options: [
+      { t:"한 가지에 몰입하면 주변이 안 보여서, 정작 필요한 정리를 놓친다", type:"A" },
+      { t:"만들어낸 결과물(그림·만들기)을 버릴 수가 없어서 계속 쌓인다", type:"B" },
+      { t:"함께 쓰다 다투거나, 나눠 쓰는 규칙이 안 잡혀서 힘들다", type:"D" },
+      { t:"새로운 물건·낯선 배치에 예민하게 반응해서 조심스럽다", type:"E" },
+    ]
+  },
+  {
+    q: "아이가 짜증이나 떼를 쓰는 패턴을 보면?",
+    options: [
+      { t:"하던 놀이를 방해받았을 때 (몰입이 깨질 때)", type:"A" },
+      { t:"오랫동안 가만히 있어야 할 때 (에너지를 못 풀 때)", type:"C" },
+      { t:"같이 놀 상대가 없거나 규칙 때문에 나눠 써야 할 때", type:"D" },
+      { t:"낯설거나 시끄럽고 자극이 많은 환경일 때", type:"E" },
+    ]
+  },
+  {
+    q: "\"이런 방이면 좋겠다\" 싶은 이미지에 가장 가까운 건?",
+    options: [
+      { t:"조용히 몰입할 수 있는 나만의 작업 공간", type:"A" },
+      { t:"소품과 이야기가 담긴, 보기만 해도 마음이 몽글해지는 공간", type:"B" },
+      { t:"마음껏 뛰고 움직일 수 있는 열린 공간", type:"C" },
+      { t:"친구를 초대해서 같이 놀 수 있는 공간", type:"D" },
+    ]
+  },
+  {
+    q: "요즘 아이를 보면서 가장 자주 드는 생각은?",
+    options: [
+      { t:"집중력은 좋은데, 시야가 산만해지면 흐트러지는 것 같다", type:"A" },
+      { t:"표현하고 만드는 걸 좋아하는데 보여줄 곳이 마땅치 않다", type:"B" },
+      { t:"에너지가 넘치는데 집 안에서 풀 데가 마땅치 않다", type:"C" },
+      { t:"작은 자극에도 마음이 먼저 반응하는 게 신경 쓰인다", type:"E" },
+    ]
+  }
+];
+
+const RESULTS = {
+  A:{
+    emoji:"🧩",
+    tag:"몰입탐험가형",
+    title:"몰입탐험가형",
+    sub:"한 가지에 빠지면 세상이 잠시 멈추는 아이",
+    why:"한 가지 놀이에 깊이 빠져 시간 가는 줄 모르고, 몰입이 방해받을 때 유독 힘들어하며, 조용히 집중할 수 있는 공간을 원한다는 답변이 많았어요. 세 가지 질문 이상에서 '몰입' 신호가 나온 걸 보면, 지금 아이에게 필요한 건 더 많은 자극이 아니라 더 정돈된 시야예요.",
+    desc:"몰입탐험가형 아이는 산만해서 문제가 아니라, 오히려 몰입도가 높은 만큼 주변이 정돈되지 않으면 시선이 분산되어 쉽게 흐트러지는 타입이에요. 이런 아이에게는 '얼마나 많은 장난감을 놓아줄지'보다 '얼마나 정돈된 시야를 만들어줄지'가 훨씬 중요합니다.",
+    checklist:[
+      "눈높이에 보이는 장난감 수를 3~4개로 제한하고, 나머지는 닫힌 수납에 보관하기",
+      "놀이 구역과 이동 동선을 분리해서 몰입을 방해하는 동선 차단하기",
+      "벽면과 패브릭은 무늬 없이 - 시각적 자극을 줄여 집중력 지켜주기",
+      "\"그만 놀아\"보다 \"5분 뒤에 마무리하자\" 같은 예고형 전환 루틴 만들기",
+    ]
+  },
+  B:{
+    emoji:"🎨",
+    tag:"상상표현형",
+    title:"상상표현형",
+    sub:"이야기와 그림으로 세상을 표현하는 아이",
+    why:"역할놀이나 인형놀이에 몰두하고, 그리기·만들기 결과물에 애착이 크며, 표현할 공간이 부족할 때 답답해한다는 응답이 두드러졌어요. 아이는 지금 '치우는 방'보다 '보여줄 수 있는 방'을 기다리고 있어요.",
+    desc:"상상표현형 아이는 손으로 만들고 눈으로 확인할 수 있는 결과물이 있어야 놀이의 만족감을 느껴요. 결과물을 자꾸 버리게 되는 상황이 반복되면, 아이는 표현 자체를 조심스러워하게 될 수 있어요.",
+    checklist:[
+      "완성작을 걸어둘 수 있는 미니 전시존(끈+집게, 코르크보드 등) 만들기",
+      "재료별로 라벨링된 오픈 바구니로 꺼내기·담기 쉬운 수납 만들기",
+      "인형·소품을 '예쁘게 보이게' 진열할 수 있는 낮은 선반 활용하기",
+      "정리 시간엔 \"오늘 작품 중 3개만 남겨볼까?\" 놀이처럼 정리 습관 만들기",
+    ]
+  },
+  C:{
+    emoji:"🤸",
+    tag:"에너지발산형",
+    title:"에너지발산형",
+    sub:"몸으로 신나게 움직여야 하루가 풀리는 아이",
+    why:"몸을 쓰는 놀이를 좋아하고, 가만히 있어야 할 때 유독 힘들어하며, 열린 공간을 원한다는 답변이 많았어요. 이 아이에게 놀이는 곧 움직임이에요.",
+    desc:"에너지발산형 아이는 활동량 자체가 놀이 욕구예요. 좁고 물건 많은 방은 오히려 사고 위험과 스트레스를 키울 수 있어요. '무엇을 더 놓을지'보다 '무엇을 비울지'가 이 아이 방의 핵심 질문입니다.",
+    checklist:[
+      "방 중앙에 아무것도 없는 활동 공간(매트 한 장)부터 확보하기",
+      "모서리 보호대, 미끄럼 방지 등 안전장치를 먼저 점검하기",
+      "실내 대근육 놀이템(짐볼, 터널 등)은 한두 개로 압축해서 배치하기",
+      "에너지 발산 후 조명을 낮추는 등 '진정 루틴'을 이어 붙여 완급 조절 돕기",
+    ]
+  },
+  D:{
+    emoji:"🤝",
+    tag:"사회연결형",
+    title:"사회연결형",
+    sub:"함께일 때 가장 반짝이는 아이",
+    why:"친구나 형제자매와 함께 놀 때 가장 즐거워하고, 공유·규칙 문제로 자주 힘들어한다는 답변이 많았어요. 이 아이에게 놀이는 곧 관계예요.",
+    desc:"사회연결형 아이에게는 혼자 쓰는 완벽한 공간보다, 함께 앉고 나눠 쓸 수 있는 구조가 놀이 만족도를 훨씬 크게 높여줘요. 공간이 관계를 만들어주는 셈이죠.",
+    checklist:[
+      "마주 앉을 수 있는 낮은 테이블이나 공용 놀이 매트 배치하기",
+      "'내 것 / 같이 쓰는 것' 구역을 색깔·라벨로 구분해서 다툼 줄이기",
+      "여러 명이 동시에 꺼내 쓸 수 있도록 수납에 여유 공간 만들기",
+      "친구를 초대할 때를 대비해 여분 방석이나 의자 준비해두기",
+    ]
+  },
+  E:{
+    emoji:"🌙",
+    tag:"예민섬세형",
+    title:"예민섬세형",
+    sub:"작은 자극에도 마음이 먼저 반응하는 섬세한 아이",
+    why:"시끄럽거나 낯선 환경에서 유독 예민해지고, 조용히 있을 수 있는 나만의 공간을 원한다는 답변이 많았어요. 이 아이는 자극보다 안정감이 먼저 필요해요.",
+    desc:"예민섬세형 아이는 감각이 예민한 만큼 관찰력과 공감 능력도 뛰어난 편이에요. 이 아이에게는 '재밌는 방'보다 '안심되는 방'이 먼저 와야, 그 안에서 비로소 마음껏 놀 수 있어요.",
+    checklist:[
+      "침대나 놀이존 옆에 커튼·패브릭으로 아늑한 은신처 하나 만들기",
+      "조명은 밝기 조절이 가능한 간접등으로 바꾸기",
+      "색감과 패턴 수를 2~3가지 톤으로 제한해 시각적 안정감 주기",
+      "새로운 장난감·가구는 한 번에 하나씩, 천천히 적용하기",
+    ]
+  }
+};
+
+/* =========================================================
+   상태 & 렌더링
+   ========================================================= */
+let current = 0;
+let scores = { A:0, B:0, C:0, D:0, E:0 };
+
+const card = document.getElementById('card');
+
+function renderIntro(){
+  card.innerHTML = `
+    <div class="brand">DINITERRACE · 놀이환경 유형 테스트</div>
+    <h1>우리 아이에게 맞는<br>놀이환경은 따로 있습니다</h1>
+    <p class="lead">10년 차 교사 엄마가 현장에서 배운 확신 하나 — <b>환경이 아이를 바꿉니다.</b><br>
+    질문 6개에 답하면, 우리 아이 놀이 성향에 맞는 방 구조 체크리스트를 알려드릴게요.</p>
+    <div class="intro-list">
+      ✓ 소요 시간 <b>약 1분</b><br>
+      ✓ 질문 <b>6개</b>, 결과 유형 <b>5가지</b><br>
+      ✓ 결과에 따라 <b>바로 적용 가능한 체크리스트</b> 제공
+    </div>
+    <button class="primary" onclick="startQuiz()">테스트 시작하기</button>
+  `;
+}
+
+function startQuiz(){
+  current = 0;
+  scores = { A:0, B:0, C:0, D:0, E:0 };
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const total = QUESTIONS.length;
+  const qData = QUESTIONS[current];
+  const pct = Math.round((current / total) * 100);
+
+  const optionsHtml = qData.options.map((opt, idx) => `
+    <button class="option" onclick="selectOption('${opt.type}')">${opt.t}</button>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      <div class="progress-text">${current + 1} / ${total}</div>
+    </div>
+    <div class="q-title">${qData.q}</div>
+    <div class="options">${optionsHtml}</div>
+  `;
+}
+
+function selectOption(type){
+  scores[type] = (scores[type] || 0) + 1;
+  current++;
+  if(current < QUESTIONS.length){
+    renderQuestion();
+  }else{
+    renderResult();
+  }
+}
+
+function showToast(msg){
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=> toast.classList.remove('show'), 2400);
+}
+
+function copyTextLegacy(text){
+  return new Promise((resolve, reject)=>{
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('execCommand copy failed'));
+    }catch(e){ reject(e); }
+  });
+}
+
+function copyText(text){
+  // file:// 로 직접 열었을 때는 Clipboard API가 불안정하게 동작하는 경우가 있어
+  // 구식 execCommand 방식을 우선 사용해요.
+  const isFileProtocol = location.protocol === 'file:';
+  if(!isFileProtocol && navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).catch(()=> copyTextLegacy(text));
+  }
+  return copyTextLegacy(text);
+}
+
+function shareKakao(resultTitle){
+  const shareText = `나는 '${resultTitle}'! 디니테라스 아이방 유형 테스트에서 확인해보세요 🏡`;
+  const shareUrl = window.location.href;
+  const isFileProtocol = location.protocol === 'file:';
+
+  // 1순위: 기기 공유 시트 (모바일 브라우저/웹 호스팅 환경에서 카카오톡 포함 공유 가능)
+  // ⚠ file:// 로 직접 연 경우 navigator.share가 브라우저를 죽이는 버그가 있어 건너뜁니다.
+  if(navigator.share && !isFileProtocol){
+    try{
+      navigator.share({ title:"디니테라스 아이방 유형 테스트", text:shareText, url:shareUrl }).catch(()=>{});
+    }catch(e){ /* no-op */ }
+    return;
+  }
+
+  // 2순위: 링크(+문구) 복사 후 카카오톡에 붙여넣기 안내
+  copyText(`${shareText}\n${shareUrl}`)
+    .then(()=> showToast("링크가 복사됐어요! 카카오톡 채팅방에 붙여넣어 공유해보세요 💬"))
+    .catch(()=>{
+      window.prompt("아래 내용을 전체 선택(Ctrl/Cmd+A) → 복사해서 카카오톡에 붙여넣어 공유해주세요 👇", `${shareText}\n${shareUrl}`);
+    });
+}
+
+function getResultType(){
+  // 우선순위: 동점일 경우 A > B > C > D > E 순으로 (교사맘 관점에서 몰입/표현을 우선 진단)
+  const order = ["A","B","C","D","E"];
+  let best = order[0];
+  order.forEach(t => { if(scores[t] > scores[best]) best = t; });
+  return best;
+}
+
+function renderResult(){
+  const type = getResultType();
+  const r = RESULTS[type];
+
+  const checklistHtml = r.checklist.map((item, i) => `
+    <li><span class="num">${i+1}</span><span>${item}</span></li>
+  `).join('');
+
+  card.innerHTML = `
+    <div class="result-emoji">${r.emoji}</div>
+    <div class="result-tag">${r.tag}</div>
+    <div class="result-title">${r.title}</div>
+    <div class="result-sub">${r.sub}</div>
+
+    <div class="section-label">WHY · 이렇게 나온 이유</div>
+    <div class="why-box">${r.why}</div>
+
+    <div class="section-label">ABOUT · 우리 아이 이야기</div>
+    <div class="desc">${r.desc}</div>
+
+    <div class="section-label">CHECKLIST · 오늘부터 바꿔볼 것</div>
+    <ul class="checklist">${checklistHtml}</ul>
+
+    <div class="cta-box">
+      💌 이 체크리스트, 우리 집에 다 적용하기 막막하다면?<br>
+      <b>@디니테라스</b>에서 감성과 실용을 함께 담은 아이방 아이템과<br>
+      공간 설계 이야기를 만나보세요. 저장해두고 하나씩 실천해봐요.
+    </div>
+
+    <div class="share-row">
+      <button class="share-btn kakao-btn" onclick="shareKakao('${r.title}')">💬 카카오톡 공유하기</button>
+      <a class="share-btn insta-btn" href="${INSTAGRAM_URL}" target="_blank" rel="noopener">📸 인스타그램 보러가기</a>
+    </div>
+    <div class="share-hint">친구에게 공유하고, @dini_terrace도 놀러 와주세요 :)</div>
+
+    <button class="ghost" onclick="renderIntro()">처음으로 돌아가기</button>
+  `;
+}
+
+// 초기 렌더링
+renderIntro();
+</script>
+</body>
+</html>
