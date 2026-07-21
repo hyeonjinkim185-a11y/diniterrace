@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>디니테라스 발행 전 체크리스트</title>
+<style>
+  :root{
+    --bg:#F2ECDE;
+    --surface:#FBF8F1;
+    --surface-2:#FFFFFF;
+    --ink:#2B241C;
+    --ink-soft:#6E5F4C;
+    --ink-faint:#9C8E78;
+    --accent:#A85A34;
+    --accent-ink:#FFFFFF;
+    --accent-soft:#EBDCC7;
+    --line:#E2D5BC;
+    --good:#5B7A5C;
+    --good-bg:#E4EBDF;
+    --good-line:#C6D6C2;
+    --shadow: 0 1px 2px rgba(43,36,28,0.06), 0 8px 24px -12px rgba(43,36,28,0.18);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#1E1A13;
+      --surface:#282219;
+      --surface-2:#2F281D;
+      --ink:#F1E9D8;
+      --ink-soft:#C5B79E;
+      --ink-faint:#8C8067;
+      --accent:#E08A5B;
+      --accent-ink:#1E1A13;
+      --accent-soft:#3E3020;
+      --line:#3C3323;
+      --good:#8FB08F;
+      --good-bg:#2C3629;
+      --good-line:#41502C;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1E1A13; --surface:#282219; --surface-2:#2F281D; --ink:#F1E9D8; --ink-soft:#C5B79E;
+    --ink-faint:#8C8067; --accent:#E08A5B; --accent-ink:#1E1A13; --accent-soft:#3E3020;
+    --line:#3C3323; --good:#8FB08F; --good-bg:#2C3629; --good-line:#41502C;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -12px rgba(0,0,0,0.5);
+  }
+  :root[data-theme="light"]{
+    --bg:#F2ECDE; --surface:#FBF8F1; --surface-2:#FFFFFF; --ink:#2B241C; --ink-soft:#6E5F4C;
+    --ink-faint:#9C8E78; --accent:#A85A34; --accent-ink:#FFFFFF; --accent-soft:#EBDCC7;
+    --line:#E2D5BC; --good:#5B7A5C; --good-bg:#E4EBDF; --good-line:#C6D6C2;
+    --shadow: 0 1px 2px rgba(43,36,28,0.06), 0 8px 24px -12px rgba(43,36,28,0.18);
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", sans-serif;
+    line-height:1.6;
+    min-height:100vh;
+  }
+  ::selection{ background:var(--accent-soft); }
+
+  .wrap{
+    max-width:700px;
+    margin:0 auto;
+    padding:28px 20px 80px;
+  }
+
+  /* ---------- Header ---------- */
+  .brand{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .brand-name{
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:0.02em;
+    color:var(--accent);
+  }
+  .brand-tag{
+    font-size:12px;
+    color:var(--ink-faint);
+    letter-spacing:0.02em;
+  }
+
+  h1{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+    margin:0 0 6px;
+    text-wrap:balance;
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:14.5px;
+    margin:0 0 20px;
+  }
+
+  .polaris{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-left:3px solid var(--accent);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    margin-bottom:22px;
+  }
+  .polaris b{
+    color:var(--ink);
+    font-weight:700;
+  }
+  .polaris .label{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    color:var(--accent);
+    letter-spacing:0.04em;
+    margin-bottom:5px;
+  }
+
+  /* ---------- Progress bar (sticky) ---------- */
+  .progress-bar{
+    position:sticky;
+    top:0;
+    z-index:5;
+    background:var(--bg);
+    padding:12px 0 14px;
+    margin-bottom:6px;
+  }
+  .progress-bar::after{
+    content:"";
+    position:absolute;
+    left:-20px; right:-20px; bottom:0;
+    height:14px;
+    background:linear-gradient(var(--bg), transparent);
+    pointer-events:none;
+  }
+  .progress-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .progress-track{
+    flex:1;
+    height:8px;
+    border-radius:99px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    width:0%;
+    background:var(--good);
+    border-radius:99px;
+    transition:width 0.25s ease;
+  }
+  .progress-count{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+    white-space:nowrap;
+  }
+  .progress-count b{ color:var(--good); }
+
+  /* ---------- Sections ---------- */
+  .section{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:6px 6px 8px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 12px 8px;
+  }
+  .section-index{
+    width:24px; height:24px;
+    border-radius:7px;
+    background:var(--accent-soft);
+    color:var(--accent);
+    display:flex; align-items:center; justify-content:center;
+    font-size:12px; font-weight:800;
+    flex-shrink:0;
+  }
+  .section-title{
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:-0.01em;
+  }
+  .section-desc{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    padding:0 12px 8px 46px;
+    margin-top:-6px;
+  }
+
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    padding:9px 12px;
+    border-radius:9px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .item:hover{ background:var(--surface-2); }
+
+  .check{
+    flex-shrink:0;
+    width:20px; height:20px;
+    margin-top:1px;
+    border-radius:6px;
+    border:1.5px solid var(--line);
+    background:var(--surface-2);
+    display:flex; align-items:center; justify-content:center;
+    transition:background 0.15s, border-color 0.15s;
+  }
+  .check svg{
+    width:12px; height:12px;
+    opacity:0;
+    transition:opacity 0.1s;
+  }
+  .item.checked .check{
+    background:var(--good);
+    border-color:var(--good);
+  }
+  .item.checked .check svg{ opacity:1; }
+
+  .item-text{
+    font-size:14px;
+    color:var(--ink);
+    padding-top:1px;
+  }
+  .item.checked .item-text{
+    color:var(--ink-faint);
+    text-decoration:line-through;
+    text-decoration-color:var(--ink-faint);
+    text-decoration-thickness:1.2px;
+  }
+  .item-tag{
+    display:inline-block;
+    font-size:10.5px;
+    font-weight:700;
+    color:var(--ink-faint);
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:5px;
+    padding:1px 6px;
+    margin-left:7px;
+    vertical-align:middle;
+    letter-spacing:0.01em;
+    white-space:nowrap;
+  }
+
+  /* ---------- Toggle for 공구 section ---------- */
+  .toggle-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:13px 15px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .toggle-label{
+    font-size:14px;
+    font-weight:700;
+  }
+  .toggle-label span{
+    display:block;
+    font-size:12px;
+    font-weight:400;
+    color:var(--ink-faint);
+    margin-top:2px;
+  }
+  .switch{
+    position:relative;
+    width:42px; height:24px;
+    flex-shrink:0;
+    border-radius:99px;
+    background:var(--line);
+    cursor:pointer;
+    transition:background 0.15s;
+  }
+  .switch.on{ background:var(--accent); }
+  .switch::after{
+    content:"";
+    position:absolute;
+    top:3px; left:3px;
+    width:18px; height:18px;
+    border-radius:50%;
+    background:var(--surface-2);
+    transition:transform 0.15s;
+    box-shadow:0 1px 2px rgba(0,0,0,0.25);
+  }
+  .switch.on::after{ transform:translateX(18px); }
+
+  #gongu-section{ display:none; }
+  #gongu-section.show{ display:block; }
+
+  /* ---------- Footer ---------- */
+  .footer-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:18px;
+  }
+  .reset-btn{
+    font-size:13px;
+    font-weight:700;
+    color:var(--ink-soft);
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:9px;
+    padding:9px 14px;
+    cursor:pointer;
+  }
+  .reset-btn:hover{ color:var(--ink); border-color:var(--ink-faint); }
+  .reset-btn:focus-visible, .item:focus-visible, .switch:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
+  .source-note{
+    font-size:11.5px;
+    color:var(--ink-faint);
+    text-align:right;
+    line-height:1.5;
+  }
+
+  .done-banner{
+    display:none;
+    align-items:center;
+    gap:9px;
+    background:var(--good-bg);
+    border:1px solid var(--good-line);
+    color:var(--good);
+    font-weight:700;
+    font-size:13.5px;
+    border-radius:10px;
+    padding:11px 14px;
+    margin-bottom:14px;
+  }
+  .done-banner.show{ display:flex; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="brand">
+    <div class="brand-name">디니테라스</div>
+    <div class="brand-tag">발행 전 콘텐츠 점검표</div>
+  </div>
+
+  <h1>이거, 올려도 될까요?</h1>
+  <p class="sub">발행 버튼을 누르기 전, 오콘목달 1~4교시 공부노트와 브랜드 가이드를 근거로 만든 최종 점검표예요. 하나씩 눌러 체크해보세요.</p>
+
+  <div class="polaris">
+    <span class="label">북극성 문장</span>
+    <b>"디니테라스는 환경이 주는 힘을 믿고, 공간을 바꾸며, 공간을 통해 아이와 엄마가 함께 성장하는 삶을 기록하는 브랜드다."</b>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+      <div class="progress-count" id="count"><b>0</b> / 0</div>
+    </div>
+  </div>
+
+  <div class="done-banner" id="doneBanner">✓ 전부 체크됐어요 — 발행해도 좋아요.</div>
+
+  <!-- A -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">A</div>
+      <div class="section-title">북극성 정렬 — 브랜드가 흔들리지 않는가</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">"환경의 힘 → 아이와 엄마가 함께 성장"이라는 북극성 문장을 증명하는 콘텐츠인가?<span class="item-tag">브랜드가이드</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">오리지널 코드 3가지(경험·관점·반응) 중 최소 하나에 뿌리를 두었는가?<span class="item-tag">클로드 지침</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">아이의 몰입만이 아니라 엄마의 성장·여유도 함께 담겨, 육아 정보 계정으로 쏠리지 않았는가?<span class="item-tag">클로드 지침</span></span>
+    </label>
+  </div>
+
+  <!-- B -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">B</div>
+      <div class="section-title">타겟 — 뾰족한 한 사람</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">"모든 엄마"가 아니라 상황·감정·맥락까지 그려지는 한 사람에게 말하고 있는가?<span class="item-tag">1교시</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">그 사람이 실제로 쓰는 고통 언어로 표현했는가? (예: "내가 뭘 잘못하고 있는 걸까")<span class="item-tag">1교시</span></span>
+    </label>
+  </div>
+
+  <!-- C -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">C</div>
+      <div class="section-title">훅 — 초반 3초</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">정보 나열이 아니라 "어? 내 얘긴데?" 하고 멈추게 하는 자기관련성 훅인가?<span class="item-tag">1·2교시</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">Hook 10 아키타입(시연·대조형, 도발 질문형, 조건 타겟팅형 등) 중 하나에 해당하는가?<span class="item-tag">2교시</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">훅이 건넨 "약속"을 본문이 실제로 지키는가? (어그로성 훅은 아닌가)<span class="item-tag">4교시</span></span>
+    </label>
+  </div>
+
+  <!-- D -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">D</div>
+      <div class="section-title">구조 &amp; 퍼널</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">릴스라면 4단 감정 구조(공감→원인→변화→행동)를 따르는가?<span class="item-tag">클로드 지침</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">이 콘텐츠가 퍼널의 어느 단계(발견/신뢰/관계/전환/자산)인지 스스로 명시했는가?<span class="item-tag">2·3교시</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">저장용인지 공유용인지 기획 단계에서 정했는가?<span class="item-tag">1교시</span></span>
+    </label>
+  </div>
+
+  <!-- E -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">E</div>
+      <div class="section-title">신뢰 &amp; 권위</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">"10년차 유아교사" 같은 전문성 한 줄이 자연스럽게 들어갔는가?<span class="item-tag">2교시</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">주장이 아니라 과정·숫자·구체적 장면으로 증명하는가?<span class="item-tag">2교시</span></span>
+    </label>
+  </div>
+
+  <!-- F -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">F</div>
+      <div class="section-title">CTA &amp; 자산화</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">CTA 기준이 "팔로우"가 아니라 "저장하고 싶은가"인가?<span class="item-tag">클로드 지침</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">이 콘텐츠가 나중에 전자책·클래스 자산으로 아카이빙될 수 있는 형태인가?<span class="item-tag">3교시</span></span>
+    </label>
+  </div>
+
+  <!-- G -->
+  <div class="section">
+    <div class="section-head">
+      <div class="section-index">G</div>
+      <div class="section-title">톤 &amp; 디테일</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">따뜻한 구어체 + 권유형("~해봐요")으로 썼는가? (명령형 "~하세요"는 지양)<span class="item-tag">지침</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">"하연이"를 "하윤이"로 잘못 쓰지 않았는가?<span class="item-tag">지침</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">과한 이모지·격식체·딱딱한 강의체가 섞이지 않았는가?<span class="item-tag">지침</span></span>
+    </label>
+  </div>
+
+  <!-- toggle -->
+  <div class="toggle-row">
+    <div class="toggle-label">이번 콘텐츠, 공동구매(공구) 콘텐츠인가요?
+      <span>켜면 공구용 체크 항목이 추가돼요</span>
+    </div>
+    <div class="switch" id="gonguSwitch" role="switch" aria-checked="false" tabindex="0"></div>
+  </div>
+
+  <!-- H (conditional) -->
+  <div class="section" id="gongu-section">
+    <div class="section-head">
+      <div class="section-index">H</div>
+      <div class="section-title">공구 콘텐츠라면 추가로</div>
+    </div>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">스펙이 아니라 "이 제품이 들어온 뒤 달라진 하루"를 보여주는가?<span class="item-tag">클로드 지침</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">FABE 구조(특징→장점→혜택→증거)로 짜였는가?<span class="item-tag">2교시</span></span>
+    </label>
+    <label class="item">
+      <span class="check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.2 11.5L13 4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span class="item-text">긴급성 문구가 압박형이 아니라 배려형인가? (예: "꼭 필요하신 분만")<span class="item-tag">2교시</span></span>
+    </label>
+  </div>
+
+  <div class="footer-row">
+    <button class="reset-btn" id="resetBtn">새 콘텐츠로 초기화</button>
+    <div class="source-note">근거: 오콘목달 1~4교시 공부노트<br>+ 디니테라스 클로드 프로젝트 지침</div>
+  </div>
+
+</div>
+
+<script>
+  (function(){
+    var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
+    var fill = document.getElementById('fill');
+    var count = document.getElementById('count');
+    var doneBanner = document.getElementById('doneBanner');
+    var gonguSwitch = document.getElementById('gonguSwitch');
+    var gonguSection = document.getElementById('gongu-section');
+
+    function isVisible(el){
+      var node = el;
+      while(node){
+        if (node.id === 'gongu-section' && !node.classList.contains('show')) return false;
+        node = node.parentElement;
+      }
+      return true;
+    }
+
+    function update(){
+      var visibleItems = items.filter(isVisible);
+      var total = visibleItems.length;
+      var checked = visibleItems.filter(function(i){ return i.classList.contains('checked'); }).length;
+      var pct = total ? (checked/total*100) : 0;
+      fill.style.width = pct + '%';
+      count.innerHTML = '<b>' + checked + '</b> / ' + total;
+      doneBanner.classList.toggle('show', total > 0 && checked === total);
+    }
+
+    items.forEach(function(item){
+      item.addEventListener('click', function(e){
+        e.preventDefault();
+        item.classList.toggle('checked');
+        update();
+      });
+      item.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          item.classList.toggle('checked');
+          update();
+        }
+      });
+      item.setAttribute('tabindex', '0');
+    });
+
+    gonguSwitch.addEventListener('click', function(){
+      var on = gonguSwitch.classList.toggle('on');
+      gonguSwitch.setAttribute('aria-checked', on ? 'true' : 'false');
+      gonguSection.classList.toggle('show', on);
+      update();
+    });
+    gonguSwitch.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        gonguSwitch.click();
+      }
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', function(){
+      items.forEach(function(i){ i.classList.remove('checked'); });
+      update();
+    });
+
+    update();
+  })();
+</script>
+
+</body>
+</html>
